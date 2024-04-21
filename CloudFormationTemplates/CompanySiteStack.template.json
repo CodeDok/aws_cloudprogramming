@@ -1,0 +1,1352 @@
+{
+ "Resources": {
+  "CompanySiteVPCDEED18F3": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteVPC"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/Resource"
+   }
+  },
+  "CompanySiteVPCPublicSubnet1Subnet84E0C515": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-north-1a",
+    "CidrBlock": "10.0.0.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet1/Subnet"
+   }
+  },
+  "CompanySiteVPCPublicSubnet1RouteTableE198520D": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet1/RouteTable"
+   }
+  },
+  "CompanySiteVPCPublicSubnet1RouteTableAssociation770BCB5E": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "CompanySiteVPCPublicSubnet1RouteTableE198520D"
+    },
+    "SubnetId": {
+     "Ref": "CompanySiteVPCPublicSubnet1Subnet84E0C515"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "CompanySiteVPCPublicSubnet1DefaultRouteF608B98F": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "CompanySiteVPCIGW83C2AB11"
+    },
+    "RouteTableId": {
+     "Ref": "CompanySiteVPCPublicSubnet1RouteTableE198520D"
+    }
+   },
+   "DependsOn": [
+    "CompanySiteVPCVPCGWA04B6662"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "CompanySiteVPCPublicSubnet1EIPD1F3AE6A": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet1/EIP"
+   }
+  },
+  "CompanySiteVPCPublicSubnet1NATGateway5E4B9EE3": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "CompanySiteVPCPublicSubnet1EIPD1F3AE6A",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "CompanySiteVPCPublicSubnet1Subnet84E0C515"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "CompanySiteVPCPublicSubnet1DefaultRouteF608B98F",
+    "CompanySiteVPCPublicSubnet1RouteTableAssociation770BCB5E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet1/NATGateway"
+   }
+  },
+  "CompanySiteVPCPublicSubnet2Subnet06D4CBEC": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-north-1b",
+    "CidrBlock": "10.0.64.0/18",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet2/Subnet"
+   }
+  },
+  "CompanySiteVPCPublicSubnet2RouteTableB7645CFF": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet2/RouteTable"
+   }
+  },
+  "CompanySiteVPCPublicSubnet2RouteTableAssociation58AB1D5D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "CompanySiteVPCPublicSubnet2RouteTableB7645CFF"
+    },
+    "SubnetId": {
+     "Ref": "CompanySiteVPCPublicSubnet2Subnet06D4CBEC"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "CompanySiteVPCPublicSubnet2DefaultRouteAB5409BE": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "CompanySiteVPCIGW83C2AB11"
+    },
+    "RouteTableId": {
+     "Ref": "CompanySiteVPCPublicSubnet2RouteTableB7645CFF"
+    }
+   },
+   "DependsOn": [
+    "CompanySiteVPCVPCGWA04B6662"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "CompanySiteVPCPublicSubnet2EIP953AC606": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PublicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet2/EIP"
+   }
+  },
+  "CompanySiteVPCPublicSubnet2NATGateway842ED075": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "CompanySiteVPCPublicSubnet2EIP953AC606",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "CompanySiteVPCPublicSubnet2Subnet06D4CBEC"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PublicSubnet2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "CompanySiteVPCPublicSubnet2DefaultRouteAB5409BE",
+    "CompanySiteVPCPublicSubnet2RouteTableAssociation58AB1D5D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PublicSubnet2/NATGateway"
+   }
+  },
+  "CompanySiteVPCPrivateSubnet1Subnet7847DEE4": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-north-1a",
+    "CidrBlock": "10.0.128.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PrivateSubnet1/Subnet"
+   }
+  },
+  "CompanySiteVPCPrivateSubnet1RouteTable376037B8": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PrivateSubnet1/RouteTable"
+   }
+  },
+  "CompanySiteVPCPrivateSubnet1RouteTableAssociationD345A145": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "CompanySiteVPCPrivateSubnet1RouteTable376037B8"
+    },
+    "SubnetId": {
+     "Ref": "CompanySiteVPCPrivateSubnet1Subnet7847DEE4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "CompanySiteVPCPrivateSubnet1DefaultRouteF2C62BB0": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "CompanySiteVPCPublicSubnet1NATGateway5E4B9EE3"
+    },
+    "RouteTableId": {
+     "Ref": "CompanySiteVPCPrivateSubnet1RouteTable376037B8"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "CompanySiteVPCPrivateSubnet2Subnet8C2A4BE7": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "eu-north-1b",
+    "CidrBlock": "10.0.192.0/18",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PrivateSubnet2/Subnet"
+   }
+  },
+  "CompanySiteVPCPrivateSubnet2RouteTable633325AE": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteStack/CompanySiteVPC/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PrivateSubnet2/RouteTable"
+   }
+  },
+  "CompanySiteVPCPrivateSubnet2RouteTableAssociationEBBCA07B": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "CompanySiteVPCPrivateSubnet2RouteTable633325AE"
+    },
+    "SubnetId": {
+     "Ref": "CompanySiteVPCPrivateSubnet2Subnet8C2A4BE7"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "CompanySiteVPCPrivateSubnet2DefaultRoute6E02133F": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "CompanySiteVPCPublicSubnet2NATGateway842ED075"
+    },
+    "RouteTableId": {
+     "Ref": "CompanySiteVPCPrivateSubnet2RouteTable633325AE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "CompanySiteVPCIGW83C2AB11": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "CompanySiteVPC"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/IGW"
+   }
+  },
+  "CompanySiteVPCVPCGWA04B6662": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "CompanySiteVPCIGW83C2AB11"
+    },
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/VPCGW"
+   }
+  },
+  "CompanySiteVPCRestrictDefaultSecurityGroupCustomResource5FEEDB0C": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "CompanySiteVPCDEED18F3",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": "381492236062"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteVPC/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:ec2:eu-north-1:381492236062:security-group/",
+             {
+              "Fn::GetAtt": [
+               "CompanySiteVPCDEED18F3",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-381492236062-eu-north-1",
+     "S3Key": "ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.ee7de53d64cc9d6248fa6aa550f92358f6c907b5efd6f3298aeab1b5e7ea358a",
+    "aws:asset:property": "Code"
+   }
+  },
+  "CompanySiteSecurityGroupD761A7ED": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "CompanySiteStack/CompanySiteSecurityGroup",
+    "GroupName": "CompanySiteSecurityGroup",
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteSecurityGroup/Resource"
+   }
+  },
+  "CompanySiteSecurityGroupto00000ALLTRAFFIC24D092D7": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "CidrIp": "0.0.0.0/0",
+    "Description": "Allow all outbound traffic by default",
+    "GroupId": {
+     "Fn::GetAtt": [
+      "CompanySiteSecurityGroupD761A7ED",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "-1"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteSecurityGroup/to 0.0.0.0_0:ALL TRAFFIC"
+   }
+  },
+  "CompanySiteSecurityGroupfromplfab653938034D8C227": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow HTTP Access for CloudFront",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "CompanySiteSecurityGroupD761A7ED",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourcePrefixListId": "pl-fab65393",
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteSecurityGroup/from pl-fab65393:80"
+   }
+  },
+  "CompanySiteSecurityGroupfromCompanySiteStackCompanySiteSecurityGroup4DC4A19A8064690C01": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Load balancer to target",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "CompanySiteSecurityGroupD761A7ED",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "CompanySiteSecurityGroupD761A7ED",
+      "GroupId"
+     ]
+    },
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteSecurityGroup/from CompanySiteStackCompanySiteSecurityGroup4DC4A19A:80"
+   }
+  },
+  "CompanySiteSecurityGroupfromIndirectPeer8096E3A4FC": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "CidrIp": {
+     "Fn::GetAtt": [
+      "CompanySiteVPCDEED18F3",
+      "CidrBlock"
+     ]
+    },
+    "Description": "allow http inbound from vpc",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "CompanySiteSecurityGroupD761A7ED",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteSecurityGroup/from {IndirectPeer}:80"
+   }
+  },
+  "CompanyImageTaskDefintionTaskRole98711AB4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanyImageTaskDefintion/TaskRole/Resource"
+   }
+  },
+  "CompanyImageTaskDefintion5B027597": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Essential": true,
+      "Image": {
+       "Fn::Sub": "381492236062.dkr.ecr.eu-north-1.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-381492236062-eu-north-1:4cdffdfc762a86c91271939efe1f03f3ea2a53b091c92ab80ad35dab38af27d1"
+      },
+      "Name": "CompanyImageContainer",
+      "PortMappings": [
+       {
+        "ContainerPort": 80,
+        "HostPort": 80,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "CompanyImageTaskDefintionExecutionRole6980CEEF",
+      "Arn"
+     ]
+    },
+    "Family": "CompanySiteStackCompanyImageTaskDefintion95A0CDC0",
+    "Memory": "1024",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "CompanyImageTaskDefintionTaskRole98711AB4",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanyImageTaskDefintion/Resource"
+   }
+  },
+  "CompanyImageTaskDefintionExecutionRole6980CEEF": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanyImageTaskDefintion/ExecutionRole/Resource"
+   }
+  },
+  "CompanyImageTaskDefintionExecutionRoleDefaultPolicy49F7C7C4": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:ecr:eu-north-1:381492236062:repository/cdk-hnb659fds-container-assets-381492236062-eu-north-1"
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CompanyImageTaskDefintionExecutionRoleDefaultPolicy49F7C7C4",
+    "Roles": [
+     {
+      "Ref": "CompanyImageTaskDefintionExecutionRole6980CEEF"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanyImageTaskDefintion/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "CompanySiteCluster97F62096": {
+   "Type": "AWS::ECS::Cluster",
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteCluster/Resource"
+   }
+  },
+  "LoadBalancerBE9EEC3A": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Name": "CompanySiteLoadBalancer",
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "CompanySiteSecurityGroupD761A7ED",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "CompanySiteVPCPublicSubnet1Subnet84E0C515"
+     },
+     {
+      "Ref": "CompanySiteVPCPublicSubnet2Subnet06D4CBEC"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "CompanySiteVPCPublicSubnet1DefaultRouteF608B98F",
+    "CompanySiteVPCPublicSubnet1RouteTableAssociation770BCB5E",
+    "CompanySiteVPCPublicSubnet2DefaultRouteAB5409BE",
+    "CompanySiteVPCPublicSubnet2RouteTableAssociation58AB1D5D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/LoadBalancer/Resource"
+   }
+  },
+  "LoadBalancerPublicListenerC2ED6A14": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "LoadBalancerPublicListenerECSGroup253F49BD"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "LoadBalancerBE9EEC3A"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/LoadBalancer/PublicListener/Resource"
+   }
+  },
+  "LoadBalancerPublicListenerECSGroup253F49BD": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Ref": "CompanySiteVPCDEED18F3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/LoadBalancer/PublicListener/ECSGroup/Resource"
+   }
+  },
+  "CompanySiteServiceTaskDefTaskRoleE21F6D5B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteService/TaskDef/TaskRole/Resource"
+   }
+  },
+  "CompanySiteServiceTaskDef994461E6": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Essential": true,
+      "Image": {
+       "Fn::Sub": "381492236062.dkr.ecr.eu-north-1.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-381492236062-eu-north-1:4cdffdfc762a86c91271939efe1f03f3ea2a53b091c92ab80ad35dab38af27d1"
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "CompanySiteServiceTaskDefwebLogGroup8D69282E"
+        },
+        "awslogs-stream-prefix": "CompanySiteService",
+        "awslogs-region": "eu-north-1"
+       }
+      },
+      "Name": "web",
+      "PortMappings": [
+       {
+        "ContainerPort": 80,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "CompanySiteServiceTaskDefExecutionRoleA9AD0FF4",
+      "Arn"
+     ]
+    },
+    "Family": "CompanySiteStackCompanySiteServiceTaskDef74D50DF6",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "CompanySiteServiceTaskDefTaskRoleE21F6D5B",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteService/TaskDef/Resource"
+   }
+  },
+  "CompanySiteServiceTaskDefwebLogGroup8D69282E": {
+   "Type": "AWS::Logs::LogGroup",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteService/TaskDef/web/LogGroup/Resource"
+   }
+  },
+  "CompanySiteServiceTaskDefExecutionRoleA9AD0FF4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteService/TaskDef/ExecutionRole/Resource"
+   }
+  },
+  "CompanySiteServiceTaskDefExecutionRoleDefaultPolicyE59B4509": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": "arn:aws:ecr:eu-north-1:381492236062:repository/cdk-hnb659fds-container-assets-381492236062-eu-north-1"
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "CompanySiteServiceTaskDefwebLogGroup8D69282E",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CompanySiteServiceTaskDefExecutionRoleDefaultPolicyE59B4509",
+    "Roles": [
+     {
+      "Ref": "CompanySiteServiceTaskDefExecutionRoleA9AD0FF4"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteService/TaskDef/ExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "CompanySiteService2BE29ADE": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "CompanySiteCluster97F62096"
+    },
+    "DeploymentConfiguration": {
+     "Alarms": {
+      "AlarmNames": [],
+      "Enable": false,
+      "Rollback": false
+     },
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "web",
+      "ContainerPort": 80,
+      "TargetGroupArn": {
+       "Ref": "LoadBalancerPublicListenerECSGroup253F49BD"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "CompanySiteSecurityGroupD761A7ED",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Ref": "CompanySiteVPCPrivateSubnet1Subnet7847DEE4"
+       },
+       {
+        "Ref": "CompanySiteVPCPrivateSubnet2Subnet8C2A4BE7"
+       }
+      ]
+     }
+    },
+    "TaskDefinition": {
+     "Ref": "CompanySiteServiceTaskDef994461E6"
+    }
+   },
+   "DependsOn": [
+    "CompanySiteServiceTaskDefTaskRoleE21F6D5B",
+    "LoadBalancerPublicListenerECSGroup253F49BD",
+    "LoadBalancerPublicListenerC2ED6A14"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteService/Service/Service"
+   }
+  },
+  "CompanySiteServiceTaskCountTargetB6E3CC4B": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 4,
+    "MinCapacity": 2,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "service/",
+       {
+        "Ref": "CompanySiteCluster97F62096"
+       },
+       "/",
+       {
+        "Fn::GetAtt": [
+         "CompanySiteService2BE29ADE",
+         "Name"
+        ]
+       }
+      ]
+     ]
+    },
+    "RoleARN": "arn:aws:iam::381492236062:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService",
+    "ScalableDimension": "ecs:service:DesiredCount",
+    "ServiceNamespace": "ecs"
+   },
+   "DependsOn": [
+    "CompanySiteServiceTaskDefTaskRoleE21F6D5B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CompanySiteService/Service/TaskCount/Target/Resource"
+   }
+  },
+  "cloudFrontEB801EAF": {
+   "Type": "AWS::CloudFront::Distribution",
+   "Properties": {
+    "DistributionConfig": {
+     "Aliases": [
+      "cloudprogramming.codedok.dev"
+     ],
+     "DefaultCacheBehavior": {
+      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+      "Compress": true,
+      "TargetOriginId": "CompanySiteStackcloudFrontOrigin1158D7EED",
+      "ViewerProtocolPolicy": "redirect-to-https"
+     },
+     "Enabled": true,
+     "HttpVersion": "http2",
+     "IPV6Enabled": true,
+     "Origins": [
+      {
+       "CustomOriginConfig": {
+        "HTTPSPort": 80,
+        "OriginProtocolPolicy": "http-only",
+        "OriginSSLProtocols": [
+         "TLSv1.2"
+        ]
+       },
+       "DomainName": {
+        "Fn::GetAtt": [
+         "LoadBalancerBE9EEC3A",
+         "DNSName"
+        ]
+       },
+       "Id": "CompanySiteStackcloudFrontOrigin1158D7EED",
+       "OriginShield": {
+        "Enabled": false
+       }
+      }
+     ],
+     "ViewerCertificate": {
+      "AcmCertificateArn": {
+       "Fn::GetAtt": [
+        "ExportsReader8B249524",
+        "/cdk/exports/CompanySiteStack/CompanySiteCertificateStackuseast1RefCertificateCompanySubdomainD273E6973FC84115"
+       ]
+      },
+      "MinimumProtocolVersion": "TLSv1.2_2021",
+      "SslSupportMethod": "sni-only"
+     }
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/cloudFront/Resource"
+   }
+  },
+  "codedokdev8E76E405": {
+   "Type": "AWS::Route53::HostedZone",
+   "Properties": {
+    "Name": "codedok.dev."
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/codedok.dev/Resource"
+   }
+  },
+  "AliastoCloudFront8CF2C7BC": {
+   "Type": "AWS::Route53::RecordSet",
+   "Properties": {
+    "AliasTarget": {
+     "DNSName": {
+      "Fn::GetAtt": [
+       "cloudFrontEB801EAF",
+       "DomainName"
+      ]
+     },
+     "HostedZoneId": {
+      "Fn::FindInMap": [
+       "AWSCloudFrontPartitionHostedZoneIdMap",
+       {
+        "Ref": "AWS::Partition"
+       },
+       "zoneId"
+      ]
+     }
+    },
+    "HostedZoneId": {
+     "Ref": "codedokdev8E76E405"
+    },
+    "Name": "cloudprogramming.codedok.dev.",
+    "Type": "AAAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/Alias to CloudFront/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31T227bMAz9lr4rWptuH5CmXZeh24y46MNeAlpmPC6KZIhUgsDwvw+Skzi9YE86PKQp8hx5qm9uP+vrK9jzxNSbiaVKd6WA2SjY86pDM9XdS2vUfO1eirkqYmXJlLFyKIkb0dJHwWeoLI78yM2YvSEQ8u5cnMDDokjHT5BHENzDQRWBdiA4Nl44weDwXDBMcoxmImD+bNGJKtHEQHJ4DD62eYb/Eg9NQOZ39MJlvldoWHdfITSQVuDNPa7J0WmBt4x3AuQwXHI2smBI1Sd4bFdi2JEZdDrC0oBNOqW+cx+d9Ipgq7ulH/TMZ+EtmSzAgNKQYQXMKKzvvdlgWGyhSWKjpJxeYuuZxIfDHTAqtMBCxnqoK7DgDLlmN9XdrG0tmezOk4f6LueG0V/Fl3XEgu5Yc8IX+WcIDcpZ+oswS7tqQZKtrD++u34jlfUN6+7JN+eOJ9wrGDtAFM8GLLlGd6Om6e6s9iumV8b6WK+Dd6K7e2IJVMWTw5dxr0J6sF9udTf8AN88C9a/vcvmXEQzAFii8aHOrmVUovS9WiL7GJLrkcVvxzCVfZgqgt9RjSFblz0tBRpyTfrmV5Q25qV+QNuSa3r1HXbwaXqjr/X06i8TTUJ0QlvUy+H8ByYvsfbsAwAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/CDKMetadata/Default"
+   }
+  },
+  "ExportsReader8B249524": {
+   "Type": "Custom::CrossRegionExportReader",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomCrossRegionExportReaderCustomResourceProviderHandler46647B68",
+      "Arn"
+     ]
+    },
+    "ReaderProps": {
+     "region": "eu-north-1",
+     "prefix": "CompanySiteStack",
+     "imports": {
+      "/cdk/exports/CompanySiteStack/CompanySiteCertificateStackuseast1RefCertificateCompanySubdomainD273E6973FC84115": "{{resolve:ssm:/cdk/exports/CompanySiteStack/CompanySiteCertificateStackuseast1RefCertificateCompanySubdomainD273E6973FC84115}}"
+     }
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/ExportsReader/Resource/Default"
+   }
+  },
+  "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Resource": "arn:aws:ssm:eu-north-1:381492236062:parameter/cdk/exports/CompanySiteStack/*",
+         "Action": [
+          "ssm:AddTagsToResource",
+          "ssm:RemoveTagsFromResource",
+          "ssm:GetParameters"
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/Custom::CrossRegionExportReaderCustomResourceProvider/Role"
+   }
+  },
+  "CustomCrossRegionExportReaderCustomResourceProviderHandler46647B68": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-381492236062-eu-north-1",
+     "S3Key": "8acca95a9957d02a9f3ec124c9869c5d5b70a7fb3e332120850781ecc9363037.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x"
+   },
+   "DependsOn": [
+    "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CompanySiteStack/Custom::CrossRegionExportReaderCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.8acca95a9957d02a9f3ec124c9869c5d5b70a7fb3e332120850781ecc9363037",
+    "aws:asset:property": "Code"
+   }
+  }
+ },
+ "Outputs": {
+  "CompanySiteServiceLoadBalancerDNS14E100F2": {
+   "Value": {
+    "Fn::GetAtt": [
+     "LoadBalancerBE9EEC3A",
+     "DNSName"
+    ]
+   }
+  },
+  "CompanySiteServiceServiceURL678A6F4D": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "http://",
+      {
+       "Fn::GetAtt": [
+        "LoadBalancerBE9EEC3A",
+        "DNSName"
+       ]
+      }
+     ]
+    ]
+   }
+  }
+ },
+ "Mappings": {
+  "AWSCloudFrontPartitionHostedZoneIdMap": {
+   "aws": {
+    "zoneId": "Z2FDTNDATAQYW2"
+   },
+   "aws-cn": {
+    "zoneId": "Z3RFFRIM2A3IF5"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
