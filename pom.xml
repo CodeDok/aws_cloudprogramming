@@ -30,13 +30,20 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>com.myorg.CloudProgrammingApp</mainClass>
+                    <mainClass>dev.codedok.CloudProgrammingApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
     <dependencies>
+        <!-- Utility -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.32</version>
+        </dependency>
+
         <!-- AWS Cloud Development Kit -->
         <dependency>
             <groupId>software.amazon.awscdk</groupId>
@@ -50,6 +57,7 @@
             <version>${constructs.version}</version>
         </dependency>
 
+        <!-- Testing -->
         <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter</artifactId>
