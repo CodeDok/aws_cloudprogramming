@@ -10,6 +10,9 @@ public class Domain {
     private final String host;
 
     public String getFullQualifiedDomain() {
-        return subdomain + '.' + host;
+        if(subdomain != null && (!subdomain.isEmpty())) {
+            return subdomain + '.' + host;
+        }
+        return host;
     }
 }

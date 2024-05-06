@@ -1,0 +1,36 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStack",
+        "cloudformation:DeleteStack",
+        "cloudformation:DescribeStacks",
+        "cloudformation:UpdateStack",
+        "s3:*",
+        "ssm:*",
+        "cloudfront:*",
+        "ec2:*",
+        "ecr:*",
+        "route:*",
+        "iam:PassRole"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "iam:*Role*",
+        "iam:GetPolicy",
+        "iam:CreatePolicy",
+        "iam:DeletePolicy",
+        "iam:*PolicyVersion*"
+      ],
+      "NotResource": [
+        "arn:aws:iam::*:role/cdk-*",
+        "arn:aws:iam::*:policy/cdkCFExecutionPolicy"
+      ]
+    }
+  ]
+}

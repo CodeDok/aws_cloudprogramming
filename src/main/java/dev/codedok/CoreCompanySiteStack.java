@@ -2,8 +2,12 @@ package dev.codedok;
 
 import dev.codedok.util.Domain;
 import lombok.val;
+import org.jetbrains.annotations.Nullable;
+import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
+import software.amazon.awscdk.customresources.*;
+import software.amazon.awscdk.regioninfo.RegionInfo;
 import software.amazon.awscdk.services.applicationautoscaling.EnableScalingProps;
 import software.amazon.awscdk.services.certificatemanager.ICertificate;
 import software.amazon.awscdk.services.cloudfront.BehaviorOptions;
@@ -21,6 +25,10 @@ import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedFarga
 import software.amazon.awscdk.services.ecs.patterns.ApplicationLoadBalancedTaskImageOptions;
 import software.amazon.awscdk.services.elasticloadbalancingv2.ApplicationLoadBalancer;
 import software.amazon.awscdk.services.elasticloadbalancingv2.ApplicationProtocol;
+import software.amazon.awscdk.services.iam.Effect;
+import software.amazon.awscdk.services.iam.PolicyStatement;
+import software.amazon.awscdk.services.iam.PolicyStatementProps;
+import software.amazon.awscdk.services.logs.RetentionDays;
 import software.amazon.awscdk.services.route53.AaaaRecord;
 import software.amazon.awscdk.services.route53.PublicHostedZone;
 import software.amazon.awscdk.services.route53.RecordTarget;
@@ -31,13 +39,14 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class CoreCompanySiteStack extends Stack {
 
     ApplicationLoadBalancer applicationLoadBalancer;
 
-    public CoreCompanySiteStack(final Construct scope, final String id, final StackProps props, ICertificate certificate, Domain domain) throws URISyntaxException{
+    public CoreCompanySiteStack(final Construct scope, final String id, final StackProps props, ICertificate certificate, @Nullable Domain domain) throws URISyntaxException{
         super(scope, id, props);
 
 
@@ -55,15 +64,16 @@ public class CoreCompanySiteStack extends Stack {
                 .build();
 
         securityGroup.addIngressRule(
+                // "pl-fab65393"
                 // Peer.prefixList("com.amazonaws.global.cloudfront.origin-facing"),
-                Peer.prefixList("pl-fab65393"),
+                Peer.prefixList(getPrefixListId(id, Objects.requireNonNull(props.getEnv()), "com.amazonaws.global.cloudfront.origin-facing")),
                 Port.tcp(80),
                 "Allow HTTP Access for CloudFront"
         );
 
         createEcsServiceForCompanySite(vpc, securityGroup);
 
-        val cloudfrontDistributions = Distribution.Builder.create(this, "cloudFront")
+        val cloudfrontDistributionsBuilder = Distribution.Builder.create(this, "cloudFront")
                 .enabled(true)
                 .certificate(certificate)
                 .defaultBehavior(BehaviorOptions.builder()
@@ -73,20 +83,24 @@ public class CoreCompanySiteStack extends Stack {
                                 .protocolPolicy(OriginProtocolPolicy.HTTP_ONLY)
                                 .build())
                         .viewerProtocolPolicy(ViewerProtocolPolicy.REDIRECT_TO_HTTPS)
-                        .build())
-                .domainNames(List.of(domain.getFullQualifiedDomain()))
-                .build();
+                        .build());
 
+        if (domain != null) {
+            cloudfrontDistributionsBuilder.domainNames(List.of(domain.getFullQualifiedDomain()));
+        }
 
-        val publicDomainZone = PublicHostedZone.Builder.create(this, "codedok.dev")
-                .zoneName(domain.getHost())
-                .build();
+        val cloudfrontDistributions = cloudfrontDistributionsBuilder.build();
 
-        AaaaRecord.Builder.create(this, "Alias to CloudFront")
-                .zone(publicDomainZone)
-                .recordName(domain.getSubdomain())
-                .target(RecordTarget.fromAlias(new CloudFrontTarget(cloudfrontDistributions)))
-                .build();
+        if (domain != null) {
+            val publicDomainZone = PublicHostedZone.Builder.create(this, "codedok.dev")
+                    .zoneName(domain.getHost())
+                    .build();
+            AaaaRecord.Builder.create(this, "Alias to CloudFront")
+                    .zone(publicDomainZone)
+                    .recordName(domain.getSubdomain())
+                    .target(RecordTarget.fromAlias(new CloudFrontTarget(cloudfrontDistributions)))
+                    .build();
+        }
     }
 
 
@@ -163,6 +177,41 @@ public class CoreCompanySiteStack extends Stack {
         // No need for spreading across the availability zones because fargate automatically does it.
 
         return albFargateService;
+    }
+
+    private String getPrefixListId(String stackId, Environment environment, String prefixListName) {
+
+        String customResourceName = stackId + "-GetPrefixListId";
+        return new AwsCustomResource(this, "GetPrefixListId", AwsCustomResourceProps.builder()
+                .functionName(customResourceName)
+                .logRetention(RetentionDays.ONE_DAY)
+                .onUpdate(AwsSdkCall.builder()
+                        .service("@aws-sdk/client-ec2")
+                        .action("DescribeManagedPrefixListsCommand")
+                        .parameters(Map.of(
+                            "Filters", List.of(
+                                    Map.of(
+                                            "Name", "prefix-list-name",
+                                            "Values", List.of(prefixListName)
+                                    )
+                                )
+                        ))
+                        .physicalResourceId(PhysicalResourceId.of(stackId + "-" + this.getNode().getAddr().substring(0, 16)))
+                        .build())
+                .policy(AwsCustomResourcePolicy.fromStatements(List.of(
+                        new PolicyStatement(PolicyStatementProps.builder()
+                                .effect(Effect.ALLOW)
+                                .actions(List.of("ec2:DescribeManagedPrefixLists"))
+                                .resources(List.of("*"))
+                                .conditions(Map.of(
+                                        "StringEquals", Map.of(
+                                                "aws:PrincipalAccount", Objects.requireNonNull(environment.getAccount()),
+                                                "aws:RequestedRegion", Objects.requireNonNull(environment.getRegion())
+                                        )
+                                ))
+                                .build())
+                ))).build())
+                .getResponseField("PrefixLists.0.PrefixListId");
     }
 
 }

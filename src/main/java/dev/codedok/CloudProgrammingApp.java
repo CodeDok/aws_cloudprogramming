@@ -2,6 +2,7 @@ package dev.codedok;
 
 import dev.codedok.util.Domain;
 import lombok.val;
+import org.apache.commons.lang.StringUtils;
 import software.amazon.awscdk.App;
 import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.StackProps;
@@ -14,11 +15,20 @@ public class CloudProgrammingApp {
         App app = new App();
 
 
-        Domain domain = new Domain("cloudprogramming", "codedok.dev");
+
+        String subdomainFromContext = (String) app.getNode().tryGetContext("subdomain");
+        String domainFromContext = (String) app.getNode().tryGetContext("domain");
+
+        Domain domain = null;
+
+        if(StringUtils.isNotEmpty(subdomainFromContext) && StringUtils.isNotEmpty(domainFromContext)) {
+            domain = new Domain(subdomainFromContext, domainFromContext);
+        }
+
 
         Environment coreEnvironment = Environment.builder()
                 .account(System.getenv("CDK_DEFAULT_ACCOUNT"))
-                .region("eu-north-1")
+                .region(System.getenv("CDK_DEFAULT_REGION"))
                 .build();
 
         Environment cloudFrontEnvironment = Environment.builder()
@@ -41,7 +51,7 @@ public class CloudProgrammingApp {
 
         val companySiteStack = new CoreCompanySiteStack(app, "CompanySiteStack", props, companySiteCertificate, domain);
 
-        companySiteStack.addDependency(companySiteCertificateStack, "We need the certificate from ACM");
+        companySiteStack.addDependency(companySiteCertificateStack, "We need the certificate from ACM for HTTPS");
         app.synth();
     }
 
