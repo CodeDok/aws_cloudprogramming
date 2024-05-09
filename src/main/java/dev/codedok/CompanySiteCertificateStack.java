@@ -30,7 +30,7 @@ public class CompanySiteCertificateStack extends Stack {
                     .validation(CertificateValidation.fromDns())
                     .build();
         } else {
-            LOGGER.severe("No certificate created");
+            LOGGER.severe("Skipped stack: " + id);
         }
     }
 }

@@ -1,0 +1,40 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Identity",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:AttachRolePolicy",
+        "iam:ListAttachedRolePolicies",
+        "iam:ListServerCertificates"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:role/AWSReservedSSO_<Insert name of the permission set>_*",
+        "arn:aws:iam::*:role/ecsTaskExecutionRole",
+        "arn:aws:sts::*:role/AWSReservedSSO_<Insert name of the permission set>_*",
+        "arn:aws:iam::*:server-certificate/cloudfront/*"
+      ]
+    },
+    {
+      "Sid": "Statement1",
+      "Effect": "Allow",
+      "Action": [
+        "route53:*",
+        "cloudfront:*",
+        "ec2:*",
+        "acm:*",
+        "ecr:*",
+        "ecs:*"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:role/AWSReservedSSO_<Insert name of the permission set>_*",
+        "arn:aws:sts::*:role/AWSReservedSSO_<Insert name of the permission set>_*",
+        "arn:aws:iam::*:role/ecsTaskExecutionRole"
+      ]
+    }
+  ]
+}

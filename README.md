@@ -15,10 +15,13 @@ The CompanySiteStack contains all the artifacts and services we need to deploy t
 ## Prerequisites
 
 - An IAM AWS Account with all the necessary permissions
+  - See [IAM Setup](how-to%2FIAM-setup.md)
 - [AWS CDK Getting started](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html)
   - Most important:
     - Install CDK and necessary dependencies like NodeJs
 - Docker Engine
+- Maven
+- Java Version 21
 
 ## Steps to deploy to AWS
 
@@ -57,7 +60,7 @@ sso_role_name=***
 ---
 
 ### Certificate Stack
-1. Bootstrap the us-east-1 environment: 
+1. Bootstrap the us-east-1 environment (only one-time): 
     ```shell
     cdk bootstrap aws://<IAM ACCOUNT-NUMBER>/us-east-1
     ```
@@ -76,7 +79,7 @@ sso_role_name=***
 
 
 ### Company Site Stack
-1. Bootstrap your environment for example eu-north-1:
+1. Bootstrap your environment for example eu-north-1 (only one-time):
     ```shell
     cdk bootstrap aws://<IAM ACCOUNT-NUMBER>/eu-north-1
     ```  
@@ -91,6 +94,16 @@ sso_role_name=***
 3. The stack should shortly finish successfully 
 4. Manually set the nameserver at your dns registrar to the one you find in the newly created hosted zone
 5. Now you can access the website via the provided subdomain and domain
+
+## Destroy stack
+To destroy the stack use:
+
+````shell
+cdk destroy <Stack name>
+
+# ie cdk deploy -c subdomain=cloudprogramming -c domain=codedok.dev CompanySiteStack
+# => https://cloudprogramming.codedok.dev
+````
 
 ## Useful commands
 

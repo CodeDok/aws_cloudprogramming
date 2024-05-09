@@ -123,6 +123,9 @@ public class CoreCompanySiteStack extends Stack {
         val companySiteContainer = companyImageTaskDefinition.addContainer("CompanyImageContainer",
                 ContainerDefinitionOptions.builder()
                         .image(ContainerImage.fromDockerImageAsset(companyImageAsset))
+                        .healthCheck(HealthCheck.builder()
+                                .command(List.of("CMD-SHELL", "curl --fail http://localhost/health || exit 1"))
+                                .build())
                         .build()
         );
 
@@ -167,6 +170,13 @@ public class CoreCompanySiteStack extends Stack {
                 .getSecurityGroups()
                 .get(0)
                 .addIngressRule(Peer.ipv4(vpc.getVpcCidrBlock()), Port.tcp(80), "allow http inbound from vpc");
+
+        albFargateService.getTargetGroup()
+                .configureHealthCheck(software.amazon.awscdk.services.elasticloadbalancingv2.HealthCheck.builder()
+                        .enabled(true)
+                        .protocol(software.amazon.awscdk.services.elasticloadbalancingv2.Protocol.HTTP)
+                        .path("/health")
+                        .build());
 
         albFargateService.getService()
                 .autoScaleTaskCount(EnableScalingProps.builder()
